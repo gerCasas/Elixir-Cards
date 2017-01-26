@@ -40,4 +40,37 @@ defmodule Cards do
     Enum.split(deck, hand_size)
   end
 
+  # metodo para guardar el deck, :erlang es usado para ejecutar funciones de erlang
+  def save(deck, filename) do
+    binary = :erlang.term_to_binary(deck)
+    File.write(filename, binary)
+  end
+
+  # metodo para cargar la info almacenada por parametro filename
+  # Se usan CASES para evitar IF
+  # Se usa Pattern Matching
+  # :ok y :error son "atom"
+  #File.read(filename) regresa un tuple, el primer elemento es el status de la operacion ...
+  # y el segundo elemento es el binary del contenido que se tendra que convertir con :erlang.binary_to_term
+  # _reason esta variable tiene un gion bajo para decir al compilador que estamos seguro que esa variable no sera usada realmente y por lo tanto el compilador no nos dara un warning para referise que esa variable esta declarada pero no esta siendo usada. Esta variable esta en codigo por que la necesitamos para acompletar el Pattern Matching del metodo File.read()
+
+  # def load(filename) do
+  #   {status, binary} = File.read(filename)
+  #   case status do
+  #     :ok ->
+  #       :erlang.binary_to_term binary
+  #     :error ->
+  #       "That file does not exist"
+  #   end
+  # end
+
+  def load(filename) do
+    case File.read(filename) do
+      {:ok, binary} ->
+        :erlang.binary_to_term binary
+      {:error, _reason} ->
+        "That file does not exist"
+    end
+  end
+
 end
