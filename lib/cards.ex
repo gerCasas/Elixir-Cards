@@ -1,5 +1,11 @@
 defmodule Cards do
+  @moduledoc """
+    Provides methods for creating and handling a deck of cards
+  """
 
+  @doc """
+    Returns a list of strings representing a deck of playing cards
+  """
   def create_deck do
     values = ["Ace", "Two", "Three", "Four", "Five"]
     suits = ["Spades", "Clubs", "Hearts", "Diamonds"]
@@ -27,11 +33,34 @@ defmodule Cards do
     Enum.shuffle(deck)
   end
 
+  @doc """
+    Determines whether a deck contains a given card
+
+  ## Examples
+
+      iex> deck = Cards.create_deck
+      iex> Cards.contains?(deck, "Ace of Spades")
+      true
+
+  """
+
   # metodo para saber si un arreglo o lista contiene un elemento ...
   # (puede ser string o int o float).
   def contains?(deck, card) do
     Enum.member?(deck, card)
   end
+
+  @doc """
+    Divides a deck into a hand and the remainder of the deck. The `hand_size` argument indicates how many cards should be in the hand.ESP: Divide un deck en un hand y en un resto del deck. El parametro `hand_size` indica cuantas cards deben haber en el hand.
+
+  ## Examples
+
+      iex> deck = Cards.create_deck
+      iex> {hand, _deck} = Cards.deal(deck, 1)
+      iex> hand
+      ["Ace of Spades"]
+
+  """
 
   # metodo para dividir lista deck en la cantidad que diga hand_size.
   # Enum.split regresa un tuple, el primer elemento [0] es el hand y el ...
@@ -72,5 +101,23 @@ defmodule Cards do
         "That file does not exist"
     end
   end
+
+  # Metodo que convina multiples metodos declarados arriba.
+  # crea un deck, lo randomiza y regresa un tuple con un handSize.
+  def create_hand(hand_size) do
+    # forma de ejecutar multiples metodos y ir guardando el valor para utilizarlo en otro metodo.
+    # ---------
+    # deck = Cards.create_deck
+    # deck = Cards.shuffle(deck)
+    # hand = Cards.deal(deck, hand_size)
+    # ----------
+
+    # Forma de hacer lo mismo de arriba pero con pipes, en Cards.deal solo se le envia un parametro por que con los piepes el primer parametro ya lo envia por default y solo tienes que ir poniendo del segundo parametro en adelante. Lo mismo pasa con el metodo shuffle.
+    Cards.create_deck
+    |> Cards.shuffle
+    |> Cards.deal(hand_size)
+  end
+
+
 
 end
